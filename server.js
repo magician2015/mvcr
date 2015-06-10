@@ -38,16 +38,22 @@ router.route('/mvcr')
 	var oHeader = {alg: 'RS256', typ: 'JWT'};
 	var sHeader = JSON.stringify(oHeader);
 	// Payload
-	var oPayload = req.body.payload;
+	var oPayload = req.body;
+	var sPayload = JSON.stringify(oPayload);
 	//read key
 
 	//sign jwt
-	var sJWT = KJUR.jws.JWS.sign("RS256", sHeader, oPayload, app.okey);
+	var sJWT = KJUR.jws.JWS.sign("RS256", sHeader, sPayload, app.okey);
+	
+	console.log(sJWT);
+	
 	// Return JWT
-	res.json(sJWT);           
+	res.set('Content-Type', 'application/jwt');
+	res.send(sJWT);
 });
 
 // register routes
+app.use(bodyParser());
 app.use('/api', router);
 
 fs.readFile('key.jwk', 'utf8', function (err, data) {
