@@ -3,6 +3,7 @@
 var express    = require('express');        
 var app        = express();                 
 var bodyParser = require('body-parser');
+var crypto = require('crypto');
 var r = require('./jsrsasign.js');
 var fs = require('fs');
 var rsa = require('node-rsa');
@@ -39,6 +40,10 @@ router.route('/mvcr')
 	var sHeader = JSON.stringify(oHeader);
 	// Payload
 	var oPayload = req.body;
+
+	var token = crypto.randomBytes(64).toString('hex');
+	oPayload['jti'] = token;
+	
 	var sPayload = JSON.stringify(oPayload);
 	//read key
 
@@ -46,6 +51,7 @@ router.route('/mvcr')
 	var sJWT = KJUR.jws.JWS.sign("RS256", sHeader, sPayload, app.okey);
 	
 	console.log(sJWT);
+	
 	
 	// Return JWT
 	res.set('Content-Type', 'application/jwt');
