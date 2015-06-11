@@ -6,7 +6,6 @@ var bodyParser = require('body-parser');
 var crypto = require('crypto');
 var r = require('./jsrsasign.js');
 var fs = require('fs');
-var rsa = require('node-rsa');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -31,7 +30,8 @@ router.get('/', function(req, res) {
 
 
 // on routes that end in /mvcr
-var pemtext;
+
+
 router.route('/mvcr')
 .post(function(req, res) {
 
@@ -43,14 +43,75 @@ router.route('/mvcr')
 
 	var token = crypto.randomBytes(64).toString('hex');
 	oPayload['jti'] = token;
+	var iat = Date.now();
+	oPayload['iat'] = iat;
+	function checkstring(param, localvar, friendly){
+		if (!param) {
+			res.status(400);
+			res.send('Error: ' + friendly + ' is a required field');
+		}
+		if (typeof param == "string") {
+			var localvar = param;
+		}else{
+			res.status(400);
+			res.send('Error: ' + friendly + ' field must be a string');
+		}
+	}
+
+	function checkarray(param, localvar, friendly){
+		if (!param) {
+			res.status(400);
+			res.send('Error: ' + friendly + ' is a required field');
+		}
+		if (param  instanceof Array) {
+			var localvar = param;
+		}else{
+			res.status(400);
+			res.send('Error: ' + friendly + ' field must be an array');
+		}
+	}
+
+	function checkobject(param, localvar, friendly){
+		if (!param) {
+			res.status(400);
+			res.send('Error: ' + friendly + ' is a required field');
+		}
+		if (typeof param == "object") {
+			var localvar = param;
+		}else{
+			res.status(400);
+			res.send('Error: ' + friendly + ' field must be an object');
+		}
+	}
+
+	var jurisdiction,
+	sub,
+	svc,
+	notice,
+	policy_uri,
+	data_controller,
+	consent_payload,
+	purpose;
+
+	checkstring(oPayload.jurisdiction, jurisdiction, 'jurisdiction');
+	checkstring(oPayload.sub, sub, 'sub');
+	checkarray(oPayload.svc, svc, 'svc');
+	checkstring(oPayload.notice, notice, 'notice');
+	checkstring(oPayload.policy_uri, policy_uri, 'policy_uri');
+	checkobject(oPayload.consent_payload, consent_payload, 'consent_payload');
+	checkarray(oPayload.purpose, purpose, 'purpose');
+
+
+
+
+
 	
 	var sPayload = JSON.stringify(oPayload);
 	//read key
+	console.log(oPayload);
 
 	//sign jwt
 	var sJWT = KJUR.jws.JWS.sign("RS256", sHeader, sPayload, app.okey);
-	
-	console.log(sJWT);
 	
 	
 	// Return JWT
