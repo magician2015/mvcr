@@ -91,7 +91,13 @@ router.route('/mvcr')
 	policy_uri,
 	data_controller,
 	consent_payload,
-	purpose;
+	purpose,
+	pii_collected,
+	sensitive,
+	sharing,
+	context,
+	aud,
+	scopes;
 
 	checkstring(oPayload.jurisdiction, jurisdiction, 'jurisdiction');
 	checkstring(oPayload.sub, sub, 'sub');
@@ -100,10 +106,12 @@ router.route('/mvcr')
 	checkstring(oPayload.policy_uri, policy_uri, 'policy_uri');
 	checkobject(oPayload.consent_payload, consent_payload, 'consent_payload');
 	checkarray(oPayload.purpose, purpose, 'purpose');
-
-
-
-
+	checkobject(oPayload.pii_collected, pii_collected, 'pii_collected');
+	checkarray(oPayload.sensitive, sensitive, 'sensitive');
+	checkarray(oPayload.sharing, sharing, 'sharing');
+	checkarray(oPayload.context, context, 'context');
+	checkstring(oPayload.aud, aud, 'aud');
+	checkstring(oPayload.scopes, scopes, 'scopes');
 
 	
 	var sPayload = JSON.stringify(oPayload);
