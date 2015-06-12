@@ -43,8 +43,14 @@ router.route('/mvcr')
 
 	var token = crypto.randomBytes(64).toString('hex');
 	oPayload['jti'] = token;
+
 	var iat = Date.now();
 	oPayload['iat'] = iat;
+
+	var iss = "http://consentreceipts.org";
+	oPayload['iss'] = iss;
+	
+	//data validation
 	function checkstring(param, localvar, friendly){
 		if (!param) {
 			res.status(400);

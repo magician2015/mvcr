@@ -1,0 +1,18 @@
+{
+ 
+ 	"jurisdiction" : "US",
+ 	"sub" : "sarah@engageidentity.com" ,
+ 	"svc" : ["amazon","amazon express"] ,
+ 	"notice" : "http://foo.com/notice" ,
+ 	"policy_uri" : "http://foo.com/policy" ,
+ 	"data_controller" : {"server" : "amazon web services","server jurisdiction" : "State of Washington"} ,
+ 	"consent_payload" : {"privacy policy" : "agree","ToS" : "agree"} ,
+ 	"purpose" : ["marketing","research"] ,
+	"pii_collected" : {"name" : "Sarah Squire","email" : "sarah@engageidentity.com"} ,
+	"sensitive" : ["http://example.com/medical","http://example.com/financial"] ,
+	"sharing" : ["contact information","demographic information"] ,
+	"context" : ["active privacy policy consent","passive terms of service consent"] ,
+	"aud" : "http://engageidentity.com/protected" ,
+	"scopes" : "read update"
+  
+}
