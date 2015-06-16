@@ -11,6 +11,11 @@ var fs = require('fs');
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 var port = process.env.PORT || 8080;        // set our port
 var router = express.Router();              // get an instance of the express Router
