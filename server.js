@@ -44,7 +44,8 @@ router.route('/mvcr')
 	var oHeader = {alg: 'RS256', typ: 'JWT'};
 	var sHeader = JSON.stringify(oHeader);
 	// Payload
-	var oPayload = req.body;
+	var oPayload = req.body; //what was posted
+	var rPayload = {}; //what we will return
 
 	var token = crypto.randomBytes(64).toString('hex');
 	oPayload['jti'] = token;
@@ -111,6 +112,7 @@ router.route('/mvcr')
 	scopes;
 
 	checkstring(oPayload.jurisdiction, jurisdiction, 'jurisdiction');
+	rPayload.jurisdiction = oPayload.jurisdiction;
 	checkstring(oPayload.sub, sub, 'sub');
 	checkarray(oPayload.svc, svc, 'svc');
 	checkstring(oPayload.notice, notice, 'notice');
@@ -124,10 +126,25 @@ router.route('/mvcr')
 	checkstring(oPayload.aud, aud, 'aud');
 	checkstring(oPayload.scopes, scopes, 'scopes');
 
+
+	rPayload.jurisdiction = oPayload.jurisdiction;
+	rPayload.sub = oPayload.sub;
+	rPayload.svc = oPayload.svc;
+	rPayload.notice = oPayload.notice;
+	rPayload.policy_uri = oPayload.policy_uri
+	rPayload.consent_payload = oPayload.consent_payload
+	rPayload.purpose = oPayload.purpose
+	rPayload.pii_collected = oPayload.pii_collected
+	rPayload.sensitive = oPayload.sensitive
+	rPayload.sharing = oPayload.sharing
+	rPayload.context = oPayload.context;
+	rPayload.aud = oPayload.aud;
+	rPayload.scopes = oPayload.scopes;
+
 	
-	var sPayload = JSON.stringify(oPayload);
+	var sPayload = JSON.stringify(rPayload);
 	//read key
-	console.log(oPayload);
+	console.log(rPayload);
 
 	//sign jwt
 	var sJWT = KJUR.jws.JWS.sign("RS256", sHeader, sPayload, app.okey);
