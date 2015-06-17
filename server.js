@@ -36,6 +36,10 @@ router.get('/', function(req, res) {
 
 // on routes that end in /mvcr
 
+router.route('/jwk')
+.get(function(req, res) {
+	res.json(app.pubKey);
+});
 
 router.route('/mvcr')
 .post(function(req, res) {
@@ -164,6 +168,10 @@ fs.readFile('key.jwk', 'utf8', function (err, data) {
 
 	var key = JSON.parse(data);
 	app.okey = r.KEYUTIL.getKey(key);
+	
+	// create the public key
+	delete key['d'];
+	app.pubKey = {'keys': [key]};
 
 	// start server
 	app.listen(port);
