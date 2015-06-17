@@ -116,11 +116,11 @@ router.route('/mvcr')
 	scopes;
 
 	checkstring(oPayload.jurisdiction, jurisdiction, 'jurisdiction');
-	rPayload.jurisdiction = oPayload.jurisdiction;
 	checkstring(oPayload.sub, sub, 'sub');
 	checkarray(oPayload.svc, svc, 'svc');
 	checkstring(oPayload.notice, notice, 'notice');
 	checkstring(oPayload.policy_uri, policy_uri, 'policy_uri');
+	checkobject(oPayload.data_controller, data_controller, 'data_controller');	
 	checkobject(oPayload.consent_payload, consent_payload, 'consent_payload');
 	checkarray(oPayload.purpose, purpose, 'purpose');
 	checkobject(oPayload.pii_collected, pii_collected, 'pii_collected');
@@ -136,6 +136,7 @@ router.route('/mvcr')
 	rPayload.svc = oPayload.svc;
 	rPayload.notice = oPayload.notice;
 	rPayload.policy_uri = oPayload.policy_uri
+	rPayload.data_controller = oPayload.data_controller
 	rPayload.consent_payload = oPayload.consent_payload
 	rPayload.purpose = oPayload.purpose
 	rPayload.pii_collected = oPayload.pii_collected
