@@ -145,6 +145,9 @@ router.route('/mvcr')
 	rPayload.context = oPayload.context;
 	rPayload.aud = oPayload.aud;
 	rPayload.scopes = oPayload.scopes;
+	rPayload.jti = oPayload.jti;
+	rPayload.iat = oPayload.iat;
+	rPayload.iss = oPayload.iss;
 
 	
 	var sPayload = JSON.stringify(rPayload);
