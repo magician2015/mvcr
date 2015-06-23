@@ -74,6 +74,18 @@ router.route('/mvcr')
 		}
 	}
 
+	function checkstringnotreq(param, localvar, friendly){
+		if (param) {
+			if (typeof param == "string") {
+				var localvar = param;
+			}else{
+				res.status(400);
+				res.send('Error: ' + friendly + ' field must be a string');
+			}
+		}
+	}
+
+
 	function checkarray(param, localvar, friendly){
 		if (!param) {
 			res.status(400);
@@ -127,8 +139,8 @@ router.route('/mvcr')
 	checkarray(oPayload.sensitive, sensitive, 'sensitive');
 	checkarray(oPayload.sharing, sharing, 'sharing');
 	checkarray(oPayload.context, context, 'context');
-	checkstring(oPayload.aud, aud, 'aud');
-	checkstring(oPayload.scopes, scopes, 'scopes');
+	checkstringnotreq(oPayload.aud, aud, 'aud');
+	checkstringnotreq(oPayload.scopes, scopes, 'scopes');
 
 
 	rPayload.jurisdiction = oPayload.jurisdiction;
