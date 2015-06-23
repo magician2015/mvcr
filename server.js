@@ -132,7 +132,7 @@ router.route('/mvcr')
 	checkarray(oPayload.svc, svc, 'svc');
 	checkstring(oPayload.notice, notice, 'notice');
 	checkstring(oPayload.policy_uri, policy_uri, 'policy_uri');
-	checkobject(oPayload.data_controller, data_controller, 'data_controller');	
+	checkarray(oPayload.data_controller, data_controller, 'data_controller');	
 	checkobject(oPayload.consent_payload, consent_payload, 'consent_payload');
 	checkarray(oPayload.purpose, purpose, 'purpose');
 	checkobject(oPayload.pii_collected, pii_collected, 'pii_collected');
