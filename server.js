@@ -9,7 +9,6 @@ var fs = require('fs');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -176,7 +175,6 @@ router.route('/mvcr')
 });
 
 // register routes
-app.use(bodyParser());
 app.use('/api', router);
 
 fs.readFile('key.jwk', 'utf8', function (err, data) {
