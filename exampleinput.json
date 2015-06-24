@@ -5,7 +5,7 @@
  	"svc" : ["amazon","amazon express"] ,
  	"notice" : "http://example.com/notice" ,
  	"policy_uri" : "http://example.com/policy" ,
- 	"data_controller" : {"server" : "amazon web services","server jurisdiction" : "State of Washington"} ,
+ 	"data_controller" : {"on_behalf": true, "contact": "Dave Controller", "company": "Data Controller Inc.", "address": "123 St., Place", "email": "dave@datacontroller.com", "phone": "00-123-341-2351"},
  	"consent_payload" : {"privacy policy" : "agree","ToS" : "agree"} ,
  	"purpose" : ["marketing","research"] ,
 	"pii_collected" : {"name" : "Sarah Squire","email" : "sarah@engageidentity.com"} ,
@@ -14,5 +14,4 @@
 	"context" : ["active privacy policy consent","passive terms of service consent"] ,
 	"aud" : "http://engageidentity.com/protected" ,
 	"scopes" : "read update"
-  
 }
