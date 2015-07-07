@@ -56,7 +56,7 @@ router.route('/mvcr')
 	var iat = Date.now()/1000;
 	oPayload['iat'] = iat;
 
-	var iss = "http://www.consentreceipt.org";
+	var iss = "http://api.consentreceipt.org";
 	oPayload['iss'] = iss;
 	
 	//data validation
