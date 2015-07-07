@@ -53,7 +53,7 @@ router.route('/mvcr')
 	var token = crypto.randomBytes(64).toString('hex');
 	oPayload['jti'] = token;
 
-	var iat = Date.now();
+	var iat = Date.now()/1000;
 	oPayload['iat'] = iat;
 
 	var iss = "http://www.consentreceipt.org";
