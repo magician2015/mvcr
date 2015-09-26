@@ -40,6 +40,11 @@ router.route('/jwk')
 	res.json(app.pubKey);
 });
 
+router.get('/token', function(req, res){
+	var token = crypto.randomBytes(64).toString('hex');
+	res.send(token);
+})
+
 router.route('/mvcr')
 .post(function(req, res) {
 
@@ -48,28 +53,26 @@ router.route('/mvcr')
 	var sHeader = JSON.stringify(oHeader);
 	// Payload
 	var oPayload = req.body; //what was posted
+	console.log(oPayload);
 	var rPayload = {}; //what we will return
 
 	var token = crypto.randomBytes(64).toString('hex');
-	oPayload['jti'] = token;
+	oPayload['jti'] = oPayload['jti'] || token;
 
 	var iat = Math.floor(Date.now()/1000);
-	oPayload['iat'] = iat;
-
-	var iss = "http://api.consentreceipt.org";
-	oPayload['iss'] = iss;
+	oPayload['iat'] = oPayload['iat'] || iat;
 	
 	//data validation
 	function checkstring(param, localvar, friendly){
 		if (!param) {
 			res.status(400);
-			res.send('Error: ' + friendly + ' is a required field');
+			return res.send('Error: ' + friendly + ' is a required field');
 		}
 		if (typeof param == "string") {
 			var localvar = param;
 		}else{
 			res.status(400);
-			res.send('Error: ' + friendly + ' field must be a string');
+			return res.send('Error: ' + friendly + ' field must be a string');
 		}
 	}
 
@@ -79,7 +82,7 @@ router.route('/mvcr')
 				var localvar = param;
 			}else{
 				res.status(400);
-				res.send('Error: ' + friendly + ' field must be a string');
+				return res.send('Error: ' + friendly + ' field must be a string');
 			}
 		}
 	}
@@ -88,73 +91,65 @@ router.route('/mvcr')
 	function checkarray(param, localvar, friendly){
 		if (!param) {
 			res.status(400);
-			res.send('Error: ' + friendly + ' is a required field');
+			return res.send('Error: ' + friendly + ' is a required field');
 		}
 		if (param  instanceof Array) {
 			var localvar = param;
 		}else{
 			res.status(400);
-			res.send('Error: ' + friendly + ' field must be an array');
+			return res.send('Error: ' + friendly + ' field must be an array');
 		}
 	}
 
 	function checkobject(param, localvar, friendly){
 		if (!param) {
 			res.status(400);
-			res.send('Error: ' + friendly + ' is a required field');
+			return res.send('Error: ' + friendly + ' is a required field');
 		}
 		if (typeof param == "object") {
 			var localvar = param;
 		}else{
 			res.status(400);
-			res.send('Error: ' + friendly + ' field must be an object');
+			return res.send('Error: ' + friendly + ' field must be an object');
 		}
 	}
 
 	var jurisdiction,
+	moc,
 	sub,
-	svc,
 	notice,
 	policy_uri,
 	data_controller,
-	consent_payload,
 	purpose,
 	pii_collected,
 	sensitive,
 	sharing,
-	context,
-	aud,
 	scopes;
 
 	checkstring(oPayload.jurisdiction, jurisdiction, 'jurisdiction');
+	checkstring(oPayload.moc, moc, 'method of collection');
 	checkstring(oPayload.sub, sub, 'sub');
-	checkarray(oPayload.svc, svc, 'svc');
-	checkstring(oPayload.notice, notice, 'notice');
+
 	checkstring(oPayload.policy_uri, policy_uri, 'policy_uri');
-	checkobject(oPayload.data_controller, data_controller, 'data_controller');	
-	checkobject(oPayload.consent_payload, consent_payload, 'consent_payload');
+	checkobject(oPayload.data_controller, data_controller, 'data_controller');
 	checkarray(oPayload.purpose, purpose, 'purpose');
 	checkobject(oPayload.pii_collected, pii_collected, 'pii_collected');
 	checkarray(oPayload.sensitive, sensitive, 'sensitive');
 	checkarray(oPayload.sharing, sharing, 'sharing');
-	checkarray(oPayload.context, context, 'context');
-	checkstringnotreq(oPayload.aud, aud, 'aud');
+	checkstring(oPayload.notice, notice, 'notice');	
 	checkstringnotreq(oPayload.scopes, scopes, 'scopes');
 
 
 	rPayload.jurisdiction = oPayload.jurisdiction;
+	rPayload.moc = oPayload.moc;	
 	rPayload.sub = oPayload.sub;
-	rPayload.svc = oPayload.svc;
 	rPayload.notice = oPayload.notice;
 	rPayload.policy_uri = oPayload.policy_uri
 	rPayload.data_controller = oPayload.data_controller
-	rPayload.consent_payload = oPayload.consent_payload
 	rPayload.purpose = oPayload.purpose
 	rPayload.pii_collected = oPayload.pii_collected
 	rPayload.sensitive = oPayload.sensitive
 	rPayload.sharing = oPayload.sharing
-	rPayload.context = oPayload.context;
-	rPayload.aud = oPayload.aud;
 	rPayload.scopes = oPayload.scopes;
 	rPayload.jti = oPayload.jti;
 	rPayload.iat = oPayload.iat;
@@ -171,7 +166,7 @@ router.route('/mvcr')
 	
 	// Return JWT
 	res.set('Content-Type', 'application/jwt');
-	res.send(sJWT);
+	return res.send(sJWT);
 });
 
 // register routes
