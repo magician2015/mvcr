@@ -121,7 +121,6 @@ router.route('/mvcr')
 	policy_uri,
 	data_controller,
 	purpose,
-	pii_collected,
 	sensitive,
 	sharing,
 	scopes;
@@ -133,10 +132,9 @@ router.route('/mvcr')
 	checkstring(oPayload.policy_uri, policy_uri, 'policy_uri');
 	checkobject(oPayload.data_controller, data_controller, 'data_controller');
 	checkarray(oPayload.purpose, purpose, 'purpose');
-	checkobject(oPayload.pii_collected, pii_collected, 'pii_collected');
 	checkarray(oPayload.sensitive, sensitive, 'sensitive');
-	checkarray(oPayload.sharing, sharing, 'sharing');
-	checkstring(oPayload.notice, notice, 'notice');	
+	checkobject(oPayload.sharing, sharing, 'sharing');
+	checkstringnotreq(oPayload.notice, notice, 'notice');	
 	checkstringnotreq(oPayload.scopes, scopes, 'scopes');
 
 
