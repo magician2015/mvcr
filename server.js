@@ -15,6 +15,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+app.use(express.static(__dirname + '/public'))
 
 var port = process.env.PORT || 8080;        // set our port
 var router = express.Router();              // get an instance of the express Router
@@ -28,7 +29,8 @@ router.use(function(req, res, next) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-    res.json({ message: 'welcome to the api!' });   
+//    res.json({ message: 'welcome to the api!' });
+  res.sendFile("index.html");
 });
 
 
